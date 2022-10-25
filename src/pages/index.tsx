@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { Center, Stack, Text } from "@chakra-ui/react";
+import { Center, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import CustomGrid from "../components/CustomGrid";
 import Header from "../components/Header";
@@ -52,8 +52,9 @@ const Home: NextPage = () => {
           </Center>
           :
           <>
-            <CustomGrid code={Grid?.split('')} />
-            <Stack >
+            {Grid?.length === 0 || grid.length === 0 ? <Center> <Spinner /></Center> :
+              <CustomGrid code={Grid?.split('')} />
+            }<Stack >
               <Center>
                 <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
               </Center>

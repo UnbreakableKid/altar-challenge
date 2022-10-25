@@ -1,7 +1,8 @@
-import { Button, chakra, Flex, HStack, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, Flex, HStack, Icon, Text, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
 import NextLink from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { BsMoon, BsSun } from 'react-icons/bs';
 
 
 
@@ -45,13 +46,13 @@ const Navbar = () => {
                     </HStack>
                 </HStack>
                 <HStack>
-
-                    <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+                    {sessionData && <Text>Hi {sessionData.user?.name}</Text>}
                     <Button
                         onClick={sessionData ? () => signOut() : () => signIn()}
                     >
                         {sessionData ? 'Sign out' : 'Sign in'}
                     </Button>
+                    <Button onClick={toggleColorMode}> {colorMode === 'light' ? <Icon as={BsMoon} /> : <Icon as={BsSun} />}</Button>
                 </HStack>
             </Flex>
         </chakra.header>
