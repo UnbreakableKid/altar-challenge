@@ -6,16 +6,18 @@ import { Box, Button, Center, HStack, Icon, Input, SimpleGrid, Stack, Text } fro
 import { VscCircleFilled } from "react-icons/vsc";
 import { useState } from "react";
 import { BsClock } from "react-icons/bs";
+import GenerationStatus from "../components/GenerationStatus";
+import CustomGrid from "../components/CustomGrid";
+import Header from "../components/Header";
 
 const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [inputState, setInputState] = useState(true);
   const [generateGrid, setGenerateGrid] = useState<"generate" | 'pause' | 'disabled'>('disabled');
   const { data: Grid } = trpc.grid.generate.useQuery(undefined, {
-    refetchInterval: 2000, enabled: generateGrid === 'generate', cacheTime: 0
+    refetchInterval: 2000, enabled: generateGrid === 'generate'
   });
   const { data: Code, refetch } = trpc.code.generate.useQuery({ character: inputValue, grid: Grid }, {
-    cacheTime: 0,
     enabled: !!Grid && generateGrid === 'generate', onSuccess: () => {
       if (inputState && inputValue !== '') {
         setInputState(false);
@@ -34,6 +36,7 @@ const Home: NextPage = () => {
     refetch();
   }
 
+
   return (
     <>
       <Head>
@@ -42,55 +45,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Stack>
-        <HStack justifyContent={'space-between'} p={5}>
-          <Stack spacing={1}>
-            <Text mb='8px'>Character</Text>
-            <Input
-              placeholder='Here is a sample placeholder'
-              size='sm'
-              borderRadius={'50'}
-              value={inputValue}
-              onChange={(e) => handleInputChange(e)}
-              isDisabled={!inputState}
-            />
-          </Stack>
-          <Icon as={BsClock} w={8} h={8} />
-          {generateGrid === 'generate' &&
-            <Button onClick={() => setGenerateGrid('pause')} w={185}>Pause Generating</Button>
-          }
-          {generateGrid === 'pause' &&
-            <Button onClick={() => setGenerateGrid('generate')} w={185}>Resume Generating</Button>
-          }
-          {generateGrid === 'disabled' &&
-            <Button onClick={() => setGenerateGrid('generate')} w={185}>Generate Grid</Button>
-          }
-        </HStack>
+        <Header generateGrid={generateGrid} handleInputChange={handleInputChange} inputState={inputState} inputValue={inputValue} setGenerateGrid={setGenerateGrid} />
         {generateGrid !== 'disabled' &&
-          <SimpleGrid columns={10} border={'1px'} w={'full'} h={'fit-content'}>
-            {Grid?.split('').map((char, i) => (
-              <Box bg={"white.100"} border={"1px"} boxShadow='sm' borderColor={"gray.500"} p={15} key={i} textAlign={'center'} boxSize={'full'} >{char}</Box>
-            ))}
-          </SimpleGrid>
-        }
-        {generateGrid !== 'disabled' &&
-          <Center>
+          <>
+            <CustomGrid code={Grid?.split('')} />
             <Stack >
               <Center>
                 <Stack>
-
-                  <HStack spacing={1} p={5}>
-                    {generateGrid === 'generate' ?
-                      <>
-                        <Icon as={VscCircleFilled} color="red" />
-                        <Text fontWeight={'bold'}>Live</Text>
-                      </>
-                      :
-                      <>
-                        <Icon as={VscCircleFilled} color="green" />
-                        <Text fontWeight={'bold'}>Paused</Text>
-                      </>
-                    }
-                  </HStack>
+                  <GenerationStatus generateGrid={generateGrid} />
                   <Box boxShadow={'lg'} rounded='3xl' w={150} h='full' p={5}>
                     <Text>Your code: {Code?.value}</Text>
                     {/* if dev environment print first char and second char also */}
@@ -107,16 +69,10 @@ const Home: NextPage = () => {
                 </Stack>
               </Center>
               {process.env.NODE_ENV === 'development' && inputValue !== '' && (
-                <Box p={5}>
-                  <SimpleGrid columns={10} border={'1px'} w={'fit-content'} h={'fit-content'} mb={-10}>
-                    {Code?.grid?.split('').map((char, i) => (
-                      <Box bg={"white.100"} border={"1px"} boxShadow='sm' borderColor={"gray.500"} p={15} key={i} textAlign={'center'} boxSize={'full'} >{char}</Box>
-                    ))}
-                  </SimpleGrid>
-                </Box>
+                <CustomGrid code={Code?.grid?.split('')} isDebugTable />
               )}
             </Stack>
-          </Center>
+          </>
         }
       </Stack>
     </>
