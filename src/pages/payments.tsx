@@ -116,7 +116,7 @@ const Payments: NextPage = () => {
                                             isInvalid={!!errors.amount}
                                         />
                                     </Stack>
-                                    <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={250}>
+                                    <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={100} alignSelf={'end'}>
                                         Add
                                     </Button>
                                 </HStack>
