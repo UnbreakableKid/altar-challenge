@@ -5,7 +5,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 
 
-const Navbar = ({ }: NavbarProps) => {
+const Navbar = () => {
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
