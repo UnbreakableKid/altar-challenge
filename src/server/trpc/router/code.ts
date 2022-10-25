@@ -6,22 +6,16 @@ export const codeRouter = router({
   generate: publicProcedure
     .input(
       z.object({
-        character: string().max(1).nullish(),
         grid: string().min(100).nullish(),
       })
     )
     .query(({ input }) => {
       let grid = input.grid;
-      let char = input.character?.toLowerCase();
 
       if (!grid) {
         return { value: "" };
       }
 
-      if (char) {
-        //replace random 20 characters with the input character
-        grid = randomWithChar(char, grid);
-      }
       // To compute the code, the following trivial algorithm needs to be followed:
       // 1. Get the 2 digit seconds from the system clock, like so: 12:40:36
       // 2. Get the matching grid cell characters for the positions [3,6] and [6,3], like so: “v” and “c”.
@@ -35,8 +29,8 @@ export const codeRouter = router({
       const firstVal = (seconds - lastVal) / 10;
       const firstLocation = 10 * lastVal + firstVal;
       const secondLocation = 10 * firstVal + lastVal;
-      const firstChar = grid[firstLocation];
-      const secondChar = grid[secondLocation];
+      const firstChar = grid[firstLocation]!;
+      const secondChar = grid[secondLocation]!;
       //count the occurrences of firstChar and secondChar on the entire grid
       let firstCharCount = 0;
       let secondCharCount = 0;

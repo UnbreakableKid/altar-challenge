@@ -1,11 +1,12 @@
 import { HStack, Stack, Input, Icon, Button, Text } from '@chakra-ui/react';
+import { SetStateAction } from 'jotai';
 import React from 'react'
 import { BsClock } from 'react-icons/bs';
 
 interface HeaderProps {
     generateGrid: "generate" | "pause" | "disabled";
-    setGenerateGrid: React.Dispatch<React.SetStateAction<"generate" | "pause" | "disabled">>;
-    inputValue: string;
+    setGenerateGrid: (update: SetStateAction<"generate" | "pause" | "disabled">) => void;
+    inputValue: string | null;
     inputState: boolean;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -19,7 +20,7 @@ const Header = ({ generateGrid, setGenerateGrid, inputValue, inputState, handleI
                     placeholder='Here is a sample placeholder'
                     size='sm'
                     borderRadius={'50'}
-                    value={inputValue}
+                    value={inputValue ? inputValue : ''}
                     onChange={(e) => handleInputChange(e)}
                     isDisabled={!inputState}
                 />

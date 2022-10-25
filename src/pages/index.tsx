@@ -1,39 +1,44 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { Center, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import CustomGrid from "../components/CustomGrid";
 import Header from "../components/Header";
 import CodeBox from "../components/CodeBox";
-import GenerationStatus from "../components/GenerationStatus";
+import { useAtom } from "jotai";
+import { codeState, generationState, gridState } from "../utils/jotai";
+import usePrevious from "../utils/usePrevious";
 
 const Home: NextPage = () => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string | null>(null);
   const [inputState, setInputState] = useState(true);
-  const [generateGrid, setGenerateGrid] = useState<"generate" | 'pause' | 'disabled'>('disabled');
-  const { data: Grid, isLoading } = trpc.grid.generate.useQuery(undefined, {
-    refetchInterval: 2000, enabled: generateGrid === 'generate'
+  const previousCountState = usePrevious(inputValue);
+  const [generateGrid, setGenerateGrid] = useAtom(generationState)
+  const [grid, setGrid] = useAtom(gridState)
+  const [code, setCode] = useAtom(codeState)
+  const { data: Grid } = trpc.grid.generateWithCharacter.useQuery({ char: inputValue }, {
+    refetchInterval: 2000, enabled: generateGrid === 'generate', onSuccess: (data) => {
+      setGrid(data)
+    }
   });
-  const { data: Code, refetch } = trpc.code.generate.useQuery({ character: inputValue, grid: Grid }, {
-    enabled: !!Grid && generateGrid === 'generate', onSuccess: () => {
-      if (inputState && inputValue !== '') {
-        setInputState(false);
-        //wait 4 seconds before allowing the user to generate another code
-        setTimeout(() => {
-          setInputState(true);
-        }, 4000);
-      }
+  const { refetch } = trpc.code.generate.useQuery({ grid: grid }, {
+    enabled: !!grid && generateGrid === 'generate', onSuccess: (data) => {
+      const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
+      setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
     }
   });
 
   const isDevEnv = process.env.NODE_ENV === 'development';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value === '' ? null : e.target.value;
     setInputValue(value);
     refetch();
+    setInputState(false);
+    setTimeout(() => {
+      setInputState(true);
+    }, 4000);
   }
 
   return (
@@ -54,11 +59,11 @@ const Home: NextPage = () => {
             <CustomGrid code={Grid?.split('')} />
             <Stack >
               <Center>
-                <CodeBox Code={Code} isDevEnv generateGrid={generateGrid} />
+                <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
               </Center>
-              {isDevEnv && inputValue !== '' && (
-                <CustomGrid code={Code?.grid?.split('')} isDebugTable />
-              )}
+              {/* {isDevEnv && inputValue !== '' && (
+                <CustomGrid code={code?.grid?.split('')} isDebugTable />
+              )} */}
             </Stack>
           </>
         }
