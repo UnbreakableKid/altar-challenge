@@ -63,14 +63,10 @@ const Payments: NextPage = () => {
         }
     })
 
-    const schema = z.object({
-        amount: z.number(),
-        payment: z.number(),
-    });
     const {
         handleSubmit,
         register,
-        formState: { errors, isSubmitting, isValid },
+        formState: { errors },
     } = useForm();
 
     function onSubmit(values: any) {
@@ -115,7 +111,7 @@ const Payments: NextPage = () => {
                                 isRequired
                                 isInvalid={!!errors.amount}
                             />
-                            <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit' w={250}>
+                            <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={250}>
                                 Add
                             </Button>
                         </HStack>

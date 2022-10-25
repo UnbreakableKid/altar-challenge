@@ -16,7 +16,9 @@ interface CodeBoxProps {
 }
 
 const CodeBox = ({ Code, isDevEnv, generateGrid }: CodeBoxProps) => {
+    if (!Code) return <Text>Please Generate a Grid</Text>;
     return (
+
         <Stack>
             <Center>
                 <GenerationStatus generateGrid={generateGrid} />
