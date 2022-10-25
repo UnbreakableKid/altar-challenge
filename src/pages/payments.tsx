@@ -51,8 +51,8 @@ const Payments: NextPage = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.user.deletePayment.useMutation({
-        onSuccess: () => {
-            refetch();
+        onSuccess: async () => {
+            await refetch();
             onClose();
             toast({
                 title: "Payment deleted.",
