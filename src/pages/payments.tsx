@@ -42,8 +42,9 @@ const Payments: NextPage = () => {
             toast({
                 title: "Payment created.",
                 status: "success",
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
+                position: 'top-right'
             });
         }
     });
@@ -56,8 +57,9 @@ const Payments: NextPage = () => {
             toast({
                 title: "Payment deleted.",
                 status: "success",
-                duration: 9000,
+                duration: 5000,
                 isClosable: true,
+                position: 'top-right'
             });
         }
     })
@@ -77,8 +79,6 @@ const Payments: NextPage = () => {
         setToDelete(paymentId);
     }
 
-
-
     return (
         <>
             <Head>
@@ -87,9 +87,9 @@ const Payments: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Stack spacing={10}>
-                {!grid || !code ? <Center><Text>Generate a Grid first to add to the table</Text></Center> :
+                {!grid || !code ? <Center p={10}><Text as={"h1"}>Generate a Grid first to add to the table</Text></Center> :
                     <>
-                        <CodeBox Code={code} generateGrid={generateGrid} isDevEnv />
+                        <CodeBox Code={code} generateGrid={generateGrid} isDevEnv={false} />
                         <HStack as={'form'} onSubmit={handleSubmit(onSubmit)} p={10} w={"container.sm"} mt="auto">
                             <FormControl >
                                 <HStack>
