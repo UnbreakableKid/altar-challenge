@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       setGrid(data)
     }
   });
-  const { refetch } = trpc.code.generate.useQuery({ grid: grid }, {
+  const { isLoading } = trpc.code.generate.useQuery({ grid: grid }, {
     enabled: !!grid && generateGrid === 'generate', onSuccess: (data) => {
       const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
       setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
@@ -34,7 +34,6 @@ const Home: NextPage = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value === '' ? null : e.target.value;
     setInputValue(value);
-    refetch();
     setInputState(false);
     setTimeout(() => {
       setInputState(true);
@@ -61,9 +60,7 @@ const Home: NextPage = () => {
               <Center>
                 <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
               </Center>
-              {/* {isDevEnv && inputValue !== '' && (
-                <CustomGrid code={code?.grid?.split('')} isDebugTable />
-              )} */}
+
             </Stack>
           </>
         }

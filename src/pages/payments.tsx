@@ -1,4 +1,4 @@
-import { Box, Button, Center, Container, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, useDisclosure, VStack } from "@chakra-ui/react";
+import { Button, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useAtom } from "jotai";
 import type { GetServerSideProps, NextPage } from "next";
@@ -8,8 +8,6 @@ import { z } from "zod";
 import CodeBox from "../components/CodeBox";
 import { generationState, gridState, codeState } from "../utils/jotai";
 import { trpc } from "../utils/trpc";
-import { zodResolver } from "@hookform/resolvers/zod";
-import AlertWrap from "../components/AlertWrap";
 import { useSession } from "next-auth/react";
 import { getServerAuthSession } from "../server/common/get-server-auth-session";
 import { BsPlus, BsTrash } from "react-icons/bs";
@@ -116,36 +114,38 @@ const Payments: NextPage = () => {
                     </FormControl>
                 </HStack>
                 <Center>
-
-                    <TableContainer w={'fit-content'}>
-                        <Table variant='simple' border={'1px'} borderColor={'gray.100'}>
-                            <TableCaption >Your Payments</TableCaption>
-                            <Thead>
-                                <Tr>
-                                    <Th>Name</Th>
-                                    <Th isNumeric>Amount</Th>
-                                    <Th isNumeric>Code</Th>
-                                    <Th><Center>
-                                        Grid
-                                    </Center>
-                                    </Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {UserPayments?.map((payment) => (
-                                    <Tr key={payment.id}>
-                                        <Td>{payment.name}</Td>
-                                        <Td isNumeric>{payment.amount}</Td>
-                                        <Td isNumeric scale={0.5}>{payment.code} </Td>
-                                        <Td>
-                                            <CustomGrid code={payment.grid.split('')} size={'container'} />
-                                        </Td>
-                                        <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)}>Delete Payment</Button></Td>
+                    {UserPayments && UserPayments.length > 0 && (
+                        <TableContainer w={'fit-content'}>
+                            <Table variant='simple' border={'1px'} borderColor={'gray.100'}>
+                                <TableCaption >Your Payments</TableCaption>
+                                <Thead>
+                                    <Tr>
+                                        <Th>Name</Th>
+                                        <Th isNumeric>Amount</Th>
+                                        <Th isNumeric>Code</Th>
+                                        <Th><Center>
+                                            Grid
+                                        </Center>
+                                        </Th>
                                     </Tr>
-                                ))}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
+                                </Thead>
+                                <Tbody>
+                                    {UserPayments?.map((payment) => (
+                                        <Tr key={payment.id}>
+                                            <Td>{payment.name}</Td>
+                                            <Td isNumeric>{payment.amount}</Td>
+                                            <Td isNumeric scale={0.5}>{payment.code} </Td>
+                                            <Td>
+                                                <CustomGrid code={payment.grid.split('')} size={'container'} />
+                                            </Td>
+                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)}>Delete Payment</Button></Td>
+                                        </Tr>
+                                    ))}
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    )
+                    }
                 </Center>
             </Stack >
             <Modal isOpen={isOpen} onClose={onClose}>
