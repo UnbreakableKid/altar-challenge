@@ -86,6 +86,14 @@ const Payments: NextPage = () => {
                 <HStack as={'form'} onSubmit={handleSubmit(onSubmit)} p={10} w={"container.sm"} mt="auto">
                     <FormControl >
                         <HStack>
+                            <FormLabel htmlFor='payment'>Payment Name</FormLabel>
+                            <Input
+                                id='payment'
+                                placeholder='Name'
+                                {...register('payment')}
+                                isInvalid={!!errors.payment}
+                                isRequired
+                            />
                             <FormLabel htmlFor='amount'>Amount</FormLabel>
                             <Input
                                 id='amount'
@@ -93,16 +101,9 @@ const Payments: NextPage = () => {
                                     valueAsNumber: true,
                                 })}
                                 type='number'
+                                placeholder="0"
                                 isRequired
                                 isInvalid={!!errors.amount}
-                            />
-                            <FormLabel htmlFor='payment'>Payment</FormLabel>
-                            <Input
-                                id='payment'
-                                placeholder='0'
-                                {...register('payment')}
-                                isInvalid={!!errors.payment}
-                                isRequired
                             />
                             <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit' w={250}>
                                 Add
@@ -141,14 +142,13 @@ const Payments: NextPage = () => {
                                             <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
                                         </Tr>
                                     ))}
-
+                                    {isLoading &&
+                                        <Center>
+                                            <Spinner />
+                                        </Center>
+                                    }
                                 </Tbody>
                             </Table>
-                            {isLoading &&
-                                <Center>
-                                    <Spinner />
-                                </Center>
-                            }
                         </TableContainer>
                     )
                     }
