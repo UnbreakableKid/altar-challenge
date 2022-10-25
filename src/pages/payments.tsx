@@ -153,7 +153,7 @@ const Payments: NextPage = () => {
                                                 <Td>
                                                     <CustomGrid code={payment.grid.split('')} size={'container'} />
                                                 </Td>
-                                                <Td><Button isLoading={isLoadingDelete} leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
+                                                <Td><Button isDisabled={isLoadingDelete} leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
                                             </Tr>
                                         ))}
                                         {isLoading &&
