@@ -1,6 +1,5 @@
 import { router, publicProcedure } from "../trpc";
 import { string, z } from "zod";
-import { randomWithChar } from "../../../utils/randomWithChar";
 
 export const codeRouter = router({
   generate: publicProcedure
@@ -10,7 +9,7 @@ export const codeRouter = router({
       })
     )
     .query(({ input }) => {
-      let grid = input.grid;
+      const grid = input.grid;
 
       if (!grid) {
         return { value: "" };

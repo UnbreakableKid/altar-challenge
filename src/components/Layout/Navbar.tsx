@@ -3,9 +3,7 @@ import React from 'react'
 import NextLink from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
-interface NavbarProps {
 
-}
 
 const Navbar = ({ }: NavbarProps) => {
     const bg = useColorModeValue("white", "gray.800");
