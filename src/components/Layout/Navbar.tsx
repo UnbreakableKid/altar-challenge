@@ -1,9 +1,8 @@
-import { Button, chakra, Flex, HStack, Icon, Link, Text, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, HStack, Icon, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import React from 'react'
 import NextLink from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { BsCurrencyDollar, BsHouse, BsMoon, BsSun } from 'react-icons/bs';
-
 
 
 const Navbar = () => {
@@ -34,11 +33,10 @@ const Navbar = () => {
                     <NextLink href="/" passHref >
                         <Button variant={'ghost'} leftIcon={<BsHouse />}>Grid Page</Button>
                     </NextLink>
-                    {sessionData?.user?.email &&
-                        <NextLink href="/payments" passHref>
-                            <Button leftIcon={<BsCurrencyDollar />} variant="ghost">Payments Page</Button>
-                        </NextLink>
-                    }
+                    <NextLink href="/payments" passHref>
+                        <Button leftIcon={<BsCurrencyDollar />} variant="ghost">Payments Page</Button>
+                    </NextLink>
+
                 </HStack>
                 <HStack>
                     {sessionData && <Text>Hi {sessionData.user?.name} 👋</Text>}
