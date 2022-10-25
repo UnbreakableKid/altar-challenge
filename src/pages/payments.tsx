@@ -43,9 +43,10 @@ const Payments: NextPage = () => {
     });
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const { mutate: DeletePayment } = trpc.user.deletePayment.useMutation({
+    const { mutate: DeletePayment, isLoading } = trpc.user.deletePayment.useMutation({
         onSuccess: () => {
             refetch();
+            onClose();
         }
     })
 
@@ -70,7 +71,6 @@ const Payments: NextPage = () => {
 
     function onDeleteClick(paymentId: string) {
         DeletePayment({ paymentId });
-        onClose();
     }
 
 
@@ -138,7 +138,7 @@ const Payments: NextPage = () => {
                                             <Td>
                                                 <CustomGrid code={payment.grid.split('')} size={'container'} />
                                             </Td>
-                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)}>Delete Payment</Button></Td>
+                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} isLoading={isLoading}>Delete Payment</Button></Td>
                                         </Tr>
                                     ))}
                                 </Tbody>

@@ -1,4 +1,4 @@
-import { SimpleGrid, Code, Box, Center } from '@chakra-ui/react';
+import { SimpleGrid, Box, Center } from '@chakra-ui/react';
 import React from 'react'
 
 interface CustomGridProps {

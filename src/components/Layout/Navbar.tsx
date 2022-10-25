@@ -1,14 +1,13 @@
-import { Button, chakra, Flex, HStack, Icon, Text, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, Flex, HStack, Icon, Link, Text, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
 import NextLink from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { BsMoon, BsSun } from 'react-icons/bs';
+import { BsCurrencyDollar, BsHouse, BsMoon, BsSun } from 'react-icons/bs';
 
 
 
 const Navbar = () => {
     const bg = useColorModeValue("white", "gray.800");
-    const mobileNav = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
     const { data: sessionData } = useSession();
 
@@ -23,38 +22,35 @@ const Navbar = () => {
             py={4}
             shadow="md"
         >
-            <Flex alignItems="center" justifyContent="space-between" mx="auto">
-                <Flex>
-                    <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
+            <HStack justifyContent="space-between" mx="auto">
+                <HStack
+                    spacing={10}
+                    mr={1}
+                    color="brand.500"
+                >
+                    <Text fontSize="xl" fontWeight="bold" ml="2">
                         Grid Generator
-                    </chakra.h1>
-                </Flex>
-                <HStack display="flex" alignItems="center" spacing={1}>
-                    <HStack
-                        spacing={1}
-                        mr={1}
-                        color="brand.500"
-                    >
-                        <NextLink href="/" passHref>
-                            <Button variant="ghost">Grid</Button>
+                    </Text>
+                    <NextLink href="/" passHref >
+                        <Button variant={'ghost'} leftIcon={<BsHouse />}>Grid Page</Button>
+                    </NextLink>
+                    {sessionData?.user?.email &&
+                        <NextLink href="/payments" passHref>
+                            <Button leftIcon={<BsCurrencyDollar />} variant="ghost">Payments Page</Button>
                         </NextLink>
-                        {sessionData?.user?.email &&
-                            <NextLink href="/payments" passHref>
-                                <Button variant="ghost">Payments</Button>
-                            </NextLink>
-                        }
-                    </HStack>
+                    }
                 </HStack>
                 <HStack>
-                    {sessionData && <Text>Hi {sessionData.user?.name}</Text>}
+                    {sessionData && <Text>Hi {sessionData.user?.name} 👋</Text>}
                     <Button
                         onClick={sessionData ? () => signOut() : () => signIn()}
+                        variant="ghost"
                     >
                         {sessionData ? 'Sign out' : 'Sign in'}
                     </Button>
-                    <Button onClick={toggleColorMode}> {colorMode === 'light' ? <Icon as={BsMoon} /> : <Icon as={BsSun} />}</Button>
+                    <Button variant={'ghost'} onClick={toggleColorMode}> {colorMode === 'light' ? <Icon as={BsMoon} /> : <Icon as={BsSun} />}</Button>
                 </HStack>
-            </Flex>
+            </HStack>
         </chakra.header>
 
     </>);

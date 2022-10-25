@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       setGrid(data)
     }
   });
-  const { isLoading } = trpc.code.generate.useQuery({ grid: grid }, {
+  const { } = trpc.code.generate.useQuery({ grid: grid }, {
     enabled: !!grid && generateGrid === 'generate', onSuccess: (data) => {
       const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
       setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
