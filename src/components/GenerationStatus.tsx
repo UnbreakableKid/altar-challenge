@@ -7,7 +7,7 @@ interface GenerationStatusProps {
 
 const GenerationStatus = ({ generateGrid }: GenerationStatusProps) => {
     return (<>
-        <HStack spacing={1} p={5}>
+        <HStack spacing={1} p={2}>
             {generateGrid === 'generate' ?
                 <>
                     <Icon as={VscCircleFilled} color="red" />
