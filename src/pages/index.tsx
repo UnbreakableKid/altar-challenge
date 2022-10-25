@@ -52,13 +52,16 @@ const Home: NextPage = () => {
           </Center>
           :
           <>
-            {Grid?.length === 0 || grid.length === 0 ? <Center> <Spinner /></Center> :
-              <CustomGrid code={Grid?.split('')} />
-            }<Stack >
-              <Center>
-                <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
-              </Center>
-            </Stack>
+            {grid.length === 0 ? <Center> <Spinner /></Center> :
+              <>
+                <CustomGrid code={Grid?.split('')} />
+                <Stack >
+                  <Center>
+                    <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
+                  </Center>
+                </Stack>
+              </>
+            }
           </>
         }
       </Stack>
