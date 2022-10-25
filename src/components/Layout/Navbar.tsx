@@ -1,7 +1,7 @@
-import { Box, Button, chakra, CloseButton, Flex, HStack, IconButton, useColorMode, useColorModeValue, useDisclosure, VisuallyHidden, VStack } from '@chakra-ui/react';
+import { Button, chakra, Flex, HStack, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { BsMenuApp } from 'react-icons/bs';
 import NextLink from 'next/link';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface NavbarProps {
 
@@ -11,6 +11,8 @@ const Navbar = ({ }: NavbarProps) => {
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
+    const { data: sessionData } = useSession();
+
     return (<>
         <chakra.header
             bg={bg}
@@ -42,7 +44,15 @@ const Navbar = ({ }: NavbarProps) => {
                         </NextLink>
                     </HStack>
                 </HStack>
-                <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+                <HStack>
+
+                    <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+                    <Button
+                        onClick={sessionData ? () => signOut() : () => signIn()}
+                    >
+                        {sessionData ? 'Sign out' : 'Sign in'}
+                    </Button>
+                </HStack>
             </Flex>
         </chakra.header>
 
