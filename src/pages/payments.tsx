@@ -93,25 +93,29 @@ const Payments: NextPage = () => {
                         <HStack as={'form'} onSubmit={handleSubmit(onSubmit)} p={10} w={"container.sm"} mt="auto">
                             <FormControl >
                                 <HStack>
-                                    <FormLabel htmlFor='payment'>Payment Name</FormLabel>
-                                    <Input
-                                        id='payment'
-                                        placeholder='Name'
-                                        {...register('payment')}
-                                        isInvalid={!!errors.payment}
-                                        isRequired
-                                    />
-                                    <FormLabel htmlFor='amount'>Amount</FormLabel>
-                                    <Input
-                                        id='amount'
-                                        {...register('amount', {
-                                            valueAsNumber: true,
-                                        })}
-                                        type='number'
-                                        placeholder="0"
-                                        isRequired
-                                        isInvalid={!!errors.amount}
-                                    />
+                                    <Stack>
+                                        <FormLabel htmlFor='payment'>Payment Name</FormLabel>
+                                        <Input
+                                            id='payment'
+                                            placeholder='Name'
+                                            {...register('payment')}
+                                            isInvalid={!!errors.payment}
+                                            isRequired
+                                        />
+                                    </Stack>
+                                    <Stack>
+                                        <FormLabel htmlFor='amount'>Amount</FormLabel>
+                                        <Input
+                                            id='amount'
+                                            {...register('amount', {
+                                                valueAsNumber: true,
+                                            })}
+                                            type='number'
+                                            placeholder="0"
+                                            isRequired
+                                            isInvalid={!!errors.amount}
+                                        />
+                                    </Stack>
                                     <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={250}>
                                         Add
                                     </Button>

@@ -17,7 +17,7 @@ const Header = ({ generateGrid, setGenerateGrid, inputValue, inputState, handleI
             <Stack spacing={1}>
                 <Text mb='8px'>Character</Text>
                 <Input
-                    placeholder='Here is a sample placeholder'
+                    placeholder='Insert a character'
                     size='sm'
                     borderRadius={'50'}
                     value={inputValue ? inputValue : ''}
