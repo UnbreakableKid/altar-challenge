@@ -1,4 +1,4 @@
-import { Button, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
+import { Button, useToast, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useAtom } from "jotai";
 import type { GetServerSideProps, NextPage } from "next";
@@ -17,6 +17,7 @@ import CustomGrid from "../components/CustomGrid";
 const Payments: NextPage = () => {
 
     const [generateGrid, setGenerateGrid] = useAtom(generationState)
+    const toast = useToast();
     const [toDelete, setToDelete] = useState('');
     const [grid, setGrid] = useAtom(gridState)
     const [code, setCode] = useAtom(codeState)
@@ -39,6 +40,12 @@ const Payments: NextPage = () => {
     const { mutate, isLoading } = trpc.user.createPayment.useMutation({
         onSuccess: () => {
             refetch();
+            toast({
+                title: "Payment created.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     });
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -47,6 +54,12 @@ const Payments: NextPage = () => {
         onSuccess: () => {
             refetch();
             onClose();
+            toast({
+                title: "Payment deleted.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
         }
     })
 
@@ -69,9 +82,6 @@ const Payments: NextPage = () => {
         setToDelete(paymentId);
     }
 
-    function onDeleteClick(paymentId: string) {
-        DeletePayment({ paymentId });
-    }
 
 
     return (
@@ -167,7 +177,7 @@ const Payments: NextPage = () => {
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant='ghost' color={'red.300'} isLoading={isLoadingDelete} onClick={() => onDeleteClick(toDelete)}>Yes</Button>
+                        <Button variant='ghost' color={'red.300'} isLoading={isLoadingDelete} onClick={() => DeletePayment({ paymentId: toDelete })}>Yes</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
