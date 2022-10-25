@@ -34,7 +34,7 @@ const Payments: NextPage = () => {
 
     const session = useSession();
 
-    const { data: UserPayments, refetch } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
+    const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
 
     const { mutate, isLoading } = trpc.user.createPayment.useMutation({
         onSuccess: () => {
@@ -128,43 +128,43 @@ const Payments: NextPage = () => {
                     </>
                 }
                 <Center>
-                    {UserPayments && UserPayments.length > 0 && (
-                        <TableContainer w={'fit-content'}>
-                            <Table variant='simple'>
-                                <TableCaption >Your Payments</TableCaption>
-                                <Thead>
-                                    <Tr>
-                                        <Th>Name</Th>
-                                        <Th isNumeric>Amount</Th>
-                                        <Th isNumeric>Code</Th>
-                                        <Th><Center>
-                                            Grid
-                                        </Center>
-                                        </Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {UserPayments?.map((payment) => (
-                                        <Tr key={payment.id}>
-                                            <Td>{payment.name}</Td>
-                                            <Td isNumeric>{payment.amount}</Td>
-                                            <Td isNumeric scale={0.5}>{payment.code} </Td>
-                                            <Td>
-                                                <CustomGrid code={payment.grid.split('')} size={'container'} />
-                                            </Td>
-                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
+                    {LoadingPayments ? <Spinner /> : (
+                        UserPayments && UserPayments.length > 0 && (
+                            <TableContainer w={'fit-content'}>
+                                <Table variant='simple'>
+                                    <TableCaption >Your Payments</TableCaption>
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Name</Th>
+                                            <Th isNumeric>Amount</Th>
+                                            <Th isNumeric>Code</Th>
+                                            <Th><Center>
+                                                Grid
+                                            </Center>
+                                            </Th>
                                         </Tr>
-                                    ))}
-                                    {isLoading &&
-                                        <Center>
-                                            <Spinner />
-                                        </Center>
-                                    }
-                                </Tbody>
-                            </Table>
-                        </TableContainer>
-                    )
-                    }
+                                    </Thead>
+                                    <Tbody>
+                                        {UserPayments?.map((payment) => (
+                                            <Tr key={payment.id}>
+                                                <Td>{payment.name}</Td>
+                                                <Td isNumeric>{payment.amount}</Td>
+                                                <Td isNumeric scale={0.5}>{payment.code} </Td>
+                                                <Td>
+                                                    <CustomGrid code={payment.grid.split('')} size={'container'} />
+                                                </Td>
+                                                <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
+                                            </Tr>
+                                        ))}
+                                        {isLoading &&
+                                            <Center>
+                                                <Spinner />
+                                            </Center>
+                                        }
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        ))}
                 </Center>
             </Stack >
             <Modal isOpen={isOpen} onClose={onClose}>
