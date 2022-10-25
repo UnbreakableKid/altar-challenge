@@ -1,10 +1,9 @@
-import { Button, useToast, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
+import { Button, useToast, Center, FormControl, FormErrorMessage, Text, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useAtom } from "jotai";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import CodeBox from "../components/CodeBox";
 import { generationState, gridState, codeState } from "../utils/jotai";
 import { trpc } from "../utils/trpc";
@@ -88,38 +87,42 @@ const Payments: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Stack spacing={10}>
-                <CodeBox Code={code} generateGrid={generateGrid} isDevEnv />
-                <HStack as={'form'} onSubmit={handleSubmit(onSubmit)} p={10} w={"container.sm"} mt="auto">
-                    <FormControl >
-                        <HStack>
-                            <FormLabel htmlFor='payment'>Payment Name</FormLabel>
-                            <Input
-                                id='payment'
-                                placeholder='Name'
-                                {...register('payment')}
-                                isInvalid={!!errors.payment}
-                                isRequired
-                            />
-                            <FormLabel htmlFor='amount'>Amount</FormLabel>
-                            <Input
-                                id='amount'
-                                {...register('amount', {
-                                    valueAsNumber: true,
-                                })}
-                                type='number'
-                                placeholder="0"
-                                isRequired
-                                isInvalid={!!errors.amount}
-                            />
-                            <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={250}>
-                                Add
-                            </Button>
+                {!grid || !code ? <Center><Text>Generate a Grid first to add to the table</Text></Center> :
+                    <>
+                        <CodeBox Code={code} generateGrid={generateGrid} isDevEnv />
+                        <HStack as={'form'} onSubmit={handleSubmit(onSubmit)} p={10} w={"container.sm"} mt="auto">
+                            <FormControl >
+                                <HStack>
+                                    <FormLabel htmlFor='payment'>Payment Name</FormLabel>
+                                    <Input
+                                        id='payment'
+                                        placeholder='Name'
+                                        {...register('payment')}
+                                        isInvalid={!!errors.payment}
+                                        isRequired
+                                    />
+                                    <FormLabel htmlFor='amount'>Amount</FormLabel>
+                                    <Input
+                                        id='amount'
+                                        {...register('amount', {
+                                            valueAsNumber: true,
+                                        })}
+                                        type='number'
+                                        placeholder="0"
+                                        isRequired
+                                        isInvalid={!!errors.amount}
+                                    />
+                                    <Button leftIcon={<BsPlus />} mt={4} colorScheme='teal' isLoading={isLoading} type='submit' w={250}>
+                                        Add
+                                    </Button>
+                                </HStack>
+                                <FormErrorMessage>
+                                    <ErrorMessage errors={errors} name="payment" />
+                                </FormErrorMessage>
+                            </FormControl>
                         </HStack>
-                        <FormErrorMessage>
-                            <ErrorMessage errors={errors} name="payment" />
-                        </FormErrorMessage>
-                    </FormControl>
-                </HStack>
+                    </>
+                }
                 <Center>
                     {UserPayments && UserPayments.length > 0 && (
                         <TableContainer w={'fit-content'}>
