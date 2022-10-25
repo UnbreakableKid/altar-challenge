@@ -1,4 +1,4 @@
-import { Button, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
+import { Button, Center, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useAtom } from "jotai";
 import type { GetServerSideProps, NextPage } from "next";
@@ -36,14 +36,14 @@ const Payments: NextPage = () => {
 
     const { data: UserPayments, refetch } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
 
-    const { mutate } = trpc.user.createPayment.useMutation({
+    const { mutate, isLoading } = trpc.user.createPayment.useMutation({
         onSuccess: () => {
             refetch();
         }
     });
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const { mutate: DeletePayment, isLoading } = trpc.user.deletePayment.useMutation({
+    const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.user.deletePayment.useMutation({
         onSuccess: () => {
             refetch();
             onClose();
@@ -116,7 +116,7 @@ const Payments: NextPage = () => {
                 <Center>
                     {UserPayments && UserPayments.length > 0 && (
                         <TableContainer w={'fit-content'}>
-                            <Table variant='simple' border={'1px'} borderColor={'gray.100'}>
+                            <Table variant='simple'>
                                 <TableCaption >Your Payments</TableCaption>
                                 <Thead>
                                     <Tr>
@@ -138,11 +138,17 @@ const Payments: NextPage = () => {
                                             <Td>
                                                 <CustomGrid code={payment.grid.split('')} size={'container'} />
                                             </Td>
-                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} isLoading={isLoading}>Delete Payment</Button></Td>
+                                            <Td><Button leftIcon={<BsTrash />} variant={'solid'} color='red.200' onClick={() => onOpenModal(payment.id)} >Delete Payment</Button></Td>
                                         </Tr>
                                     ))}
+
                                 </Tbody>
                             </Table>
+                            {isLoading &&
+                                <Center>
+                                    <Spinner />
+                                </Center>
+                            }
                         </TableContainer>
                     )
                     }
@@ -161,7 +167,7 @@ const Payments: NextPage = () => {
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant='ghost' onClick={() => onDeleteClick(toDelete)}>Yes</Button>
+                        <Button variant='ghost' color={'red.300'} isLoading={isLoadingDelete} onClick={() => onDeleteClick(toDelete)}>Yes</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
