@@ -1,4 +1,4 @@
-import { HStack, Stack, Input, Icon, Button, Text } from '@chakra-ui/react';
+import { HStack, Stack, Input, Icon, Button, Text, Spacer, Flex } from '@chakra-ui/react';
 import { SetStateAction } from 'jotai';
 import React from 'react'
 import { BsClock } from 'react-icons/bs';
@@ -13,7 +13,7 @@ interface HeaderProps {
 
 const Header = ({ generateGrid, setGenerateGrid, inputValue, inputState, handleInputChange }: HeaderProps) => {
     return (<>
-        <HStack justifyContent={'space-between'} p={5}>
+        <Flex justifyContent={'space-between'} py={5} px={100} alignItems="center">
             <Stack spacing={1}>
                 <Text mb='8px'>Character</Text>
                 <Input
@@ -35,7 +35,7 @@ const Header = ({ generateGrid, setGenerateGrid, inputValue, inputState, handleI
             {generateGrid === 'disabled' &&
                 <Button onClick={() => setGenerateGrid('generate')} w={185}>Generate Grid</Button>
             }
-        </HStack>
+        </Flex>
     </>);
 }
 export default Header;

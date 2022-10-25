@@ -1,4 +1,4 @@
-import { Box, Center, Stack, Text } from '@chakra-ui/react';
+import { Center, Text, VStack } from '@chakra-ui/react';
 import React from 'react'
 import GenerationStatus from './GenerationStatus';
 
@@ -18,13 +18,10 @@ interface CodeBoxProps {
 const CodeBox = ({ Code, isDevEnv, generateGrid }: CodeBoxProps) => {
     if (generateGrid === 'disabled') return <Text>Please Generate a Grid</Text>;
     return (
-        <Stack>
+        <VStack alignSelf={'center'} alignContent={'center'} alignItems={'center'}>
+            <GenerationStatus generateGrid={generateGrid} />
             <Center>
-                <GenerationStatus generateGrid={generateGrid} />
-            </Center>
-            <Center>
-
-                <Box boxShadow={'dark-lg'} rounded='3xl' w={150} h='full' p={5}>
+                <VStack boxShadow={'dark-lg'} rounded='3xl' w={150} h='full' p={5}>
                     <Text>Your code: {Code?.value}</Text>
                     {/* if dev environment print first char and second char also */}
                     {isDevEnv && (
@@ -32,13 +29,13 @@ const CodeBox = ({ Code, isDevEnv, generateGrid }: CodeBoxProps) => {
                             <Text>First char: {Code?.firstChar}</Text>
                             <Text>Second char: {Code?.secondChar}</Text>
                             <Text>Seconds: {Code?.seconds}</Text>
-                            <Text>FirstVal {Code?.firstVal}</Text>
+                            <Text>FirstVal: {Code?.firstVal}</Text>
                             <Text>Second: {Code?.lastVal}</Text>
                         </>
                     )}
-                </Box>
+                </VStack>
             </Center>
-        </Stack>
+        </VStack>
     );
 }
 export default CodeBox;
