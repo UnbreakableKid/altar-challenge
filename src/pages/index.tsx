@@ -8,12 +8,10 @@ import Header from "../components/Header";
 import CodeBox from "../components/CodeBox";
 import { useAtom } from "jotai";
 import { codeState, generationState, gridState } from "../utils/jotai";
-import usePrevious from "../utils/usePrevious";
 
 const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState<string | null>(null);
   const [inputState, setInputState] = useState(true);
-  const previousCountState = usePrevious(inputValue);
   const [generateGrid, setGenerateGrid] = useAtom(generationState)
   const [grid, setGrid] = useAtom(gridState)
   const [code, setCode] = useAtom(codeState)
@@ -29,7 +27,6 @@ const Home: NextPage = () => {
     }
   });
 
-  const isDevEnv = process.env.NODE_ENV === 'development';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value === '' ? null : e.target.value;
@@ -60,7 +57,6 @@ const Home: NextPage = () => {
               <Center>
                 <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
               </Center>
-
             </Stack>
           </>
         }

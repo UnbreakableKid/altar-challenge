@@ -37,9 +37,11 @@ const Navbar = () => {
                         <NextLink href="/" passHref>
                             <Button variant="ghost">Grid</Button>
                         </NextLink>
-                        <NextLink href="/payments" passHref>
-                            <Button variant="ghost">Payments</Button>
-                        </NextLink>
+                        {sessionData?.user?.email &&
+                            <NextLink href="/payments" passHref>
+                                <Button variant="ghost">Payments</Button>
+                            </NextLink>
+                        }
                     </HStack>
                 </HStack>
                 <HStack>
