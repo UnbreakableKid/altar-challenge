@@ -18,9 +18,6 @@ export const serverSchema = z.object({
   ),
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
-
-  EMAIL_SERVER: z.string(),
-  EMAIL_FROM: z.string(),
 });
 
 /**
