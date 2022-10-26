@@ -23,6 +23,8 @@ const Header = ({ generateGrid, setGenerateGrid, inputValue, inputState, handleI
                     value={inputValue ? inputValue : ''}
                     onChange={(e) => handleInputChange(e)}
                     isDisabled={!inputState}
+                    inputMode='text'
+                    maxLength={1}
                 />
             </Stack>
             <Icon as={BsClock} w={8} h={8} />
