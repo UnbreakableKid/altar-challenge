@@ -159,7 +159,7 @@ const Payments: NextPage = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>Delete Payment {toDelete}?</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         Are you sure you want to delete?
