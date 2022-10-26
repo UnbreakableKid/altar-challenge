@@ -23,11 +23,11 @@ const Payments: NextPage = () => {
 
     const session = useSession();
 
-    // const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
+    const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
 
     const { mutate, isLoading } = trpc.user.createPayment.useMutation({
         onSuccess: () => {
-            // refetch();
+            refetch();
             toast({
                 title: "Payment created.",
                 status: "success",
@@ -41,7 +41,7 @@ const Payments: NextPage = () => {
 
     const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.user.deletePayment.useMutation({
         onSuccess: async () => {
-            // await refetch();
+            await refetch();
             onClose();
             toast({
                 title: "Payment deleted.",
@@ -116,7 +116,7 @@ const Payments: NextPage = () => {
                         </HStack>
                     </>
                 }
-                {/* <Center>
+                <Center>
                     {LoadingPayments ? <Spinner /> : (
                         UserPayments && UserPayments.length > 0 && (
                             <TableContainer w={'fit-content'}>
@@ -154,7 +154,7 @@ const Payments: NextPage = () => {
                                 </Table>
                             </TableContainer>
                         ))}
-                </Center> */}
+                </Center>
             </Stack >
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -184,14 +184,14 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
     const session = await getServerAuthSession(context);
 
-    // if (!session) {
-    //     return {
-    //         redirect: {
-    //             destination: '/api/auth/signin',
-    //             permanent: false,
-    //         },
-    //     };
-    // }
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/api/auth/signin',
+                permanent: false,
+            },
+        };
+    }
     return {
         props: { session },
     };
