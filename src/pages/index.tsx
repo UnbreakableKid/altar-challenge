@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
 import { Center, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import CustomGrid from "../components/CustomGrid";
@@ -13,8 +12,8 @@ const Home: NextPage = () => {
   const [inputValue, setInputValue] = useAtom(inputValueState);
   const [inputState, setInputState] = useState(true);
   const [generateGrid, setGenerateGrid] = useAtom(generationState)
-  const [grid, setGrid] = useAtom(gridState)
-  const [code, setCode] = useAtom(codeState)
+  const [grid] = useAtom(gridState)
+  const [code] = useAtom(codeState)
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

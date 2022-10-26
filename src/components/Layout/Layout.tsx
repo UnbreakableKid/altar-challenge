@@ -6,21 +6,21 @@ import Navbar from './Navbar';
 
 
 const Layout = ({ children }: any) => {
-    const [generateGrid, setGenerateGrid] = useAtom(generationState)
+    const [generateGrid] = useAtom(generationState)
     const [grid, setGrid] = useAtom(gridState)
-    const [code, setCode] = useAtom(codeState)
-    const [inputValue, setInputValue] = useAtom(inputValueState);
+    const [_, setCode] = useAtom(codeState)
+    const [inputValue] = useAtom(inputValueState);
 
 
 
     trpc.grid.generateWithCharacter.useQuery({ char: inputValue }, {
-        refetchInterval: 2000, enabled: generateGrid === 'generate', onSuccess: (data) => {
+        refetchInterval: 2000, enabled: generateGrid === 'generate', cacheTime: 0, onSuccess: (data) => {
             setGrid(data)
         }
     });
 
     trpc.code.generate.useQuery({ grid: grid }, {
-        enabled: !!grid && generateGrid === 'generate', onSuccess: (data) => {
+        enabled: !!grid && generateGrid === 'generate', cacheTime: 0, onSuccess: (data) => {
             const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
             setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
         }

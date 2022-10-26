@@ -23,9 +23,9 @@ const Payments: NextPage = () => {
 
     const session = useSession();
 
-    const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
+    const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.payment.getPayments.useQuery({ userId: session.data!.user!.id });
 
-    const { mutate, isLoading } = trpc.user.createPayment.useMutation({
+    const { mutate, isLoading } = trpc.payment.createPayment.useMutation({
         onSuccess: () => {
             refetch();
             toast({
@@ -39,7 +39,7 @@ const Payments: NextPage = () => {
     });
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.user.deletePayment.useMutation({
+    const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.payment.deletePayment.useMutation({
         onSuccess: async () => {
             await refetch();
             onClose();

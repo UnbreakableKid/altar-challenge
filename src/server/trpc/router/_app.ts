@@ -6,7 +6,7 @@ import { gridRouter } from "./grid";
 import { codeRouter } from "./code";
 
 export const appRouter = router({
-  user: paymentRouter,
+  payment: paymentRouter,
   auth: authRouter,
   grid: gridRouter,
   code: codeRouter,
