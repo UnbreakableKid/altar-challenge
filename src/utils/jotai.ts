@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import { string } from "zod";
 
 export const generationState = atom<"generate" | "pause" | "disabled">(
   "disabled"
