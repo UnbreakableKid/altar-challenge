@@ -45,13 +45,13 @@ export const codeRouter = router({
       if (firstCharCount > 9) {
         const lowest = Math.ceil(firstCharCount / 9);
         console.log(lowest);
-        firstCharCount = firstCharCount / lowest;
+        firstCharCount = Math.floor(firstCharCount / lowest);
       }
       //22
       if (secondCharCount > 9) {
         const lowest = Math.ceil(secondCharCount / 9);
         console.log(lowest);
-        secondCharCount = secondCharCount / lowest;
+        secondCharCount = Math.floor(secondCharCount / lowest);
       }
       return {
         value: firstCharCount.toString() + secondCharCount.toString(),
