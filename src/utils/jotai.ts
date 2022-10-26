@@ -6,6 +6,7 @@ export const generationState = atom<"generate" | "pause" | "disabled">(
 );
 
 export const gridState = atom("");
+export const inputValueState = atom<string | null>(null);
 export const codeState = atom({
   value: "",
   firstChar: "",

@@ -20,25 +20,14 @@ const Payments: NextPage = () => {
     const [toDelete, setToDelete] = useState('');
     const [grid, setGrid] = useAtom(gridState)
     const [code, setCode] = useAtom(codeState)
-    const { data: Grid } = trpc.grid.generate.useQuery(undefined, {
-        refetchInterval: 2000, enabled: generateGrid === 'generate', onSuccess: (data) => {
-            setGrid(data)
-        }
-    });
-    const { } = trpc.code.generate.useQuery({ grid: Grid }, {
-        enabled: !!Grid && generateGrid === 'generate', onSuccess: (data) => {
-            const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
-            setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
-        }
-    });
 
     const session = useSession();
 
-    const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
+    // const { data: UserPayments, refetch, isLoading: LoadingPayments } = trpc.user.getPayments.useQuery({ userId: session.data!.user!.id });
 
     const { mutate, isLoading } = trpc.user.createPayment.useMutation({
         onSuccess: () => {
-            refetch();
+            // refetch();
             toast({
                 title: "Payment created.",
                 status: "success",
@@ -52,7 +41,7 @@ const Payments: NextPage = () => {
 
     const { mutate: DeletePayment, isLoading: isLoadingDelete } = trpc.user.deletePayment.useMutation({
         onSuccess: async () => {
-            await refetch();
+            // await refetch();
             onClose();
             toast({
                 title: "Payment deleted.",
@@ -127,7 +116,7 @@ const Payments: NextPage = () => {
                         </HStack>
                     </>
                 }
-                <Center>
+                {/* <Center>
                     {LoadingPayments ? <Spinner /> : (
                         UserPayments && UserPayments.length > 0 && (
                             <TableContainer w={'fit-content'}>
@@ -165,7 +154,7 @@ const Payments: NextPage = () => {
                                 </Table>
                             </TableContainer>
                         ))}
-                </Center>
+                </Center> */}
             </Stack >
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -195,14 +184,14 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
     const session = await getServerAuthSession(context);
 
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/api/auth/signin',
-                permanent: false,
-            },
-        };
-    }
+    // if (!session) {
+    //     return {
+    //         redirect: {
+    //             destination: '/api/auth/signin',
+    //             permanent: false,
+    //         },
+    //     };
+    // }
     return {
         props: { session },
     };

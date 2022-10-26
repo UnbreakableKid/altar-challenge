@@ -43,10 +43,19 @@ export const codeRouter = router({
       }
       //exception: if the count is larger than 9, divide the count by the lowest integer possible in order to get a value lower or equal to 9
       if (firstCharCount > 9) {
-        firstCharCount = Math.floor(firstCharCount / 10);
+        let i = 1;
+        while (firstCharCount > 9) {
+          i++;
+          firstCharCount = Math.floor(firstCharCount / i);
+        }
       }
+      //22
       if (secondCharCount > 9) {
-        secondCharCount = Math.floor(secondCharCount / 10);
+        let i = 1;
+        while (secondCharCount > 9) {
+          i++;
+          secondCharCount = Math.floor(secondCharCount / i);
+        }
       }
       return {
         value: firstCharCount.toString() + secondCharCount.toString(),

@@ -7,25 +7,14 @@ import CustomGrid from "../components/CustomGrid";
 import Header from "../components/Header";
 import CodeBox from "../components/CodeBox";
 import { useAtom } from "jotai";
-import { codeState, generationState, gridState } from "../utils/jotai";
+import { codeState, generationState, gridState, inputValueState } from "../utils/jotai";
 
 const Home: NextPage = () => {
-  const [inputValue, setInputValue] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useAtom(inputValueState);
   const [inputState, setInputState] = useState(true);
   const [generateGrid, setGenerateGrid] = useAtom(generationState)
   const [grid, setGrid] = useAtom(gridState)
   const [code, setCode] = useAtom(codeState)
-  const { data: Grid } = trpc.grid.generateWithCharacter.useQuery({ char: inputValue }, {
-    refetchInterval: 2000, enabled: generateGrid === 'generate', onSuccess: (data) => {
-      setGrid(data)
-    }
-  });
-  const { } = trpc.code.generate.useQuery({ grid: grid }, {
-    enabled: !!grid && generateGrid === 'generate', onSuccess: (data) => {
-      const { value, firstChar, firstVal, lastVal, grid, secondChar, seconds } = data;
-      setCode({ value: value, firstChar: firstChar!, secondChar: secondChar!, firstVal: firstVal!, lastVal: lastVal!, seconds: seconds!, grid: grid! })
-    }
-  });
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +43,7 @@ const Home: NextPage = () => {
           <>
             {grid.length === 0 ? <Center> <Spinner /></Center> :
               <>
-                <CustomGrid code={Grid?.split('')} />
+                <CustomGrid code={grid?.split('')} />
                 <Stack >
                   <Center>
                     <CodeBox Code={code} isDevEnv generateGrid={generateGrid} />
